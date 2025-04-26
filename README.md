@@ -12,6 +12,10 @@ Esta aplicação web permite carregar qualquer arquivo Markdown e convertê-lo e
   <img src="public/demo-screenshot.png" alt="Screenshot da aplicação" width="800"/>
 </p>
 
+## 🔗 Preview Online
+
+Experimente a aplicação online: [Markdown to PDF](https://markdown-to-pdf-silk.vercel.app/)
+
 ## ✨ Funcionalidades
 
 - 📤 Upload de arquivos Markdown via drag-and-drop ou seleção de arquivo
