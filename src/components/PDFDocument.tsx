@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   tocItem: {
     fontSize: 11,
-    marginBottom: 4,
+    marginBottom: 8,
     lineHeight: 1.5,
     textDecoration: "none",
     color: "#444",
@@ -186,6 +186,12 @@ interface PDFDocumentProps {
   content: ContentSection[];
 }
 
+// Tipos para os elementos do render
+interface PageNumberProps {
+  pageNumber: number;
+  totalPages: number;
+}
+
 // Componente de cabeçalho e rodapé fixos
 const PageHeader = ({ title }: { title: string }) => (
   <View style={styles.header} fixed>
@@ -196,7 +202,9 @@ const PageHeader = ({ title }: { title: string }) => (
 const PageFooter = () => (
   <Text
     style={styles.pageNumber}
-    render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
+    render={({ pageNumber, totalPages }: PageNumberProps) =>
+      `${pageNumber} / ${totalPages}`
+    }
     fixed
   />
 );
@@ -210,9 +218,9 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({
   // Dividimos o conteúdo em páginas menores para melhor renderização
   const paginatedContent = paginateContent(content, 25);
 
-  // Filtramos seções para o sumário
-  const tocItems = content.filter((item) =>
-    ["section", "subsection", "subsubsection"].includes(item.type)
+  // Filtramos apenas seções para o sumário
+  const tocItems = content.filter(
+    (item: ContentSection) => item.type === "section"
   );
 
   return (
@@ -237,17 +245,11 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({
         <Text style={styles.contentHeader}>Sumário</Text>
         <View style={styles.divisor} />
 
-        {tocItems.map((item, index) => {
-          let marginLeft = 0;
-          if (item.type === "subsection") marginLeft = 12;
-          if (item.type === "subsubsection") marginLeft = 24;
-
-          return (
-            <Text key={`toc-${index}`} style={[styles.tocItem, { marginLeft }]}>
-              {item.content}
-            </Text>
-          );
-        })}
+        {tocItems.map((item: ContentSection, index: number) => (
+          <Text key={`toc-${index}`} style={styles.tocItem}>
+            {index + 1}. {item.content}
+          </Text>
+        ))}
 
         <PageFooter />
       </Page>
@@ -259,7 +261,7 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({
 
           {pageIndex === 0 && <Text style={styles.title}>{title}</Text>}
 
-          {pageContent.map((section, sectionIndex) => {
+          {pageContent.map((section: ContentSection, sectionIndex: number) => {
             const key = `${pageIndex}-${sectionIndex}`;
 
             switch (section.type) {
