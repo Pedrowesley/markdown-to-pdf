@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface MarkdownUploaderProps {
   onFileUploaded: (file: File) => void;
@@ -13,7 +13,24 @@ const MarkdownUploader: React.FC<MarkdownUploaderProps> = ({
 }) => {
   const [dragActive, setDragActive] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Detectar se é um dispositivo móvel
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Verificar inicialmente
+    checkIfMobile();
+
+    // Adicionar listener para redimensionamento de tela
+    window.addEventListener("resize", checkIfMobile);
+
+    // Limpar listener ao desmontar
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -73,7 +90,7 @@ const MarkdownUploader: React.FC<MarkdownUploaderProps> = ({
     <div className={`w-full ${className || ""}`}>
       {!fileName ? (
         <div
-          className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors
+          className={`border-2 border-dashed rounded-lg p-4 md:p-6 text-center transition-colors
                      ${
                        dragActive
                          ? "border-blue-500 bg-blue-50"
@@ -94,7 +111,9 @@ const MarkdownUploader: React.FC<MarkdownUploaderProps> = ({
 
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-12 w-12 mx-auto text-gray-400"
+            className={`${
+              isMobile ? "h-10 w-10" : "h-12 w-12"
+            } mx-auto text-gray-400`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -107,27 +126,31 @@ const MarkdownUploader: React.FC<MarkdownUploaderProps> = ({
             />
           </svg>
 
-          <p className="mt-4 text-gray-600">
-            Arraste e solte um arquivo Markdown aqui, ou
+          <p className={`${isMobile ? "mt-3 text-sm" : "mt-4"} text-gray-600`}>
+            {isMobile
+              ? "Selecione um arquivo ou arraste aqui"
+              : "Arraste e solte um arquivo Markdown aqui, ou"}
           </p>
           <button
             type="button"
             onClick={handleButtonClick}
-            className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+            className={`${
+              isMobile ? "mt-2 px-3 py-1.5 text-sm" : "mt-3 px-4 py-2"
+            } bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium`}
           >
             Selecione um arquivo
           </button>
-          <p className="mt-3 text-xs text-gray-500">
+          <p className={`${isMobile ? "mt-2" : "mt-3"} text-xs text-gray-500`}>
             Apenas arquivos .md são aceitos
           </p>
         </div>
       ) : (
-        <div className="border rounded-lg p-4 bg-gray-50">
+        <div className="border rounded-lg p-3 md:p-4 bg-gray-50">
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
+            <div className="flex items-center max-w-[80%]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-green-500 mr-2"
+                className="h-5 w-5 md:h-6 md:w-6 text-green-500 mr-2 flex-shrink-0"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -139,11 +162,13 @@ const MarkdownUploader: React.FC<MarkdownUploaderProps> = ({
                   d="M5 13l4 4L19 7"
                 />
               </svg>
-              <span className="text-gray-800 font-medium">{fileName}</span>
+              <span className="text-gray-800 font-medium text-sm md:text-base truncate">
+                {fileName}
+              </span>
             </div>
             <button
               onClick={handleReset}
-              className="text-gray-500 hover:text-red-500"
+              className="text-gray-500 hover:text-red-500 p-1"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

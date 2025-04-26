@@ -31,24 +31,24 @@ Font.register({
 // Definindo estilos para o documento
 const styles = StyleSheet.create({
   page: {
-    padding: 50,
+    padding: 40,
     paddingTop: 60,
     paddingBottom: 60,
     backgroundColor: "#FFFFFF",
     fontFamily: "Roboto",
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 15,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     marginBottom: 20,
     fontWeight: "bold",
     textAlign: "center",
     color: "#333",
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 16,
     marginTop: 15,
     marginBottom: 10,
     fontWeight: "bold",
@@ -58,23 +58,23 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   subsubtitle: {
-    fontSize: 16,
+    fontSize: 14,
     marginTop: 10,
     marginBottom: 8,
     fontWeight: "bold",
     color: "#555",
   },
   text: {
-    fontSize: 12,
+    fontSize: 11,
     marginBottom: 8,
     lineHeight: 1.6,
     textAlign: "justify",
   },
   quote: {
-    fontSize: 12,
-    marginVertical: 12,
-    paddingLeft: 12,
-    paddingRight: 10,
+    fontSize: 11,
+    marginVertical: 10,
+    paddingLeft: 10,
+    paddingRight: 8,
     paddingVertical: 5,
     borderLeftWidth: 3,
     borderLeftColor: "#999",
@@ -83,12 +83,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
   },
   list: {
-    marginLeft: 15,
-    marginBottom: 10,
+    marginLeft: 12,
+    marginBottom: 8,
   },
   listItem: {
-    fontSize: 12,
-    marginBottom: 5,
+    fontSize: 11,
+    marginBottom: 4,
     lineHeight: 1.5,
   },
   footer: {
@@ -97,16 +97,16 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     textAlign: "center",
-    fontSize: 10,
+    fontSize: 9,
     color: "#666",
   },
   header: {
     position: "absolute",
     top: 30,
-    left: 50,
-    right: 50,
+    left: 40,
+    right: 40,
     textAlign: "center",
-    fontSize: 10,
+    fontSize: 9,
     color: "#666",
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
@@ -115,51 +115,51 @@ const styles = StyleSheet.create({
   divisor: {
     borderBottomWidth: 1,
     borderBottomColor: "#DDD",
-    marginVertical: 15,
+    marginVertical: 12,
   },
   pageNumber: {
     position: "absolute",
     bottom: 30,
-    right: 50,
-    fontSize: 10,
+    right: 40,
+    fontSize: 9,
     color: "#666",
   },
   coverImage: {
-    width: 300,
-    height: 300,
+    width: 240,
+    height: 240,
     marginBottom: 20,
     alignSelf: "center",
   },
   coverTitle: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: "bold",
     textAlign: "center",
     color: "#222",
     marginBottom: 20,
   },
   coverSubtitle: {
-    fontSize: 18,
-    textAlign: "center",
-    color: "#555",
-    marginBottom: 40,
-    fontStyle: "italic",
-  },
-  coverAuthor: {
     fontSize: 16,
     textAlign: "center",
     color: "#555",
-    marginTop: 40,
+    marginBottom: 35,
+    fontStyle: "italic",
+  },
+  coverAuthor: {
+    fontSize: 14,
+    textAlign: "center",
+    color: "#555",
+    marginTop: 35,
   },
   contentHeader: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
-    marginVertical: 20,
+    marginVertical: 15,
     color: "#444",
   },
   tocItem: {
-    fontSize: 12,
-    marginBottom: 5,
+    fontSize: 11,
+    marginBottom: 4,
     lineHeight: 1.5,
     textDecoration: "none",
     color: "#444",
@@ -239,8 +239,8 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({
 
         {tocItems.map((item, index) => {
           let marginLeft = 0;
-          if (item.type === "subsection") marginLeft = 15;
-          if (item.type === "subsubsection") marginLeft = 30;
+          if (item.type === "subsection") marginLeft = 12;
+          if (item.type === "subsubsection") marginLeft = 24;
 
           return (
             <Text key={`toc-${index}`} style={[styles.tocItem, { marginLeft }]}>
@@ -278,7 +278,7 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({
               case "subsubsection":
                 return (
                   <View key={key} style={styles.section}>
-                    <Text style={[styles.subsubtitle, { fontSize: 14 }]}>
+                    <Text style={[styles.subsubtitle, { fontSize: 13 }]}>
                       {section.content}
                     </Text>
                   </View>
